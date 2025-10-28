@@ -16,11 +16,27 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const allowedOrigin = process.env.CLIENT_ORIGIN || "http://localhost:5173";
 
+// Define the precise origins
+const allowedOrigins = [
+    // 1. The local development origin
+    "http://localhost:5173", 
+    
+    // 2. The exact deployed Vercel URL (HTTPS, no trailing slash)
+    "https://blogpost-fawn-beta.vercel.app", 
+    
+    // 3. The value pulled from the Render environment variable
+    allowedOrigin,
+
+    // 4. The URL with a trailing slash
+    "https://blogpost-fawn-beta.vercel.app/",
+];
+
 // default middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin:allowedOrigin
+    origin:allowedOrigins,
+    credentials:true
 }))
 
 //apis
